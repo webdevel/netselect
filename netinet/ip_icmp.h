@@ -42,11 +42,11 @@
  * Structure of an icmp header.
  */
 struct icmp {
-	u_char	icmp_type;		/* type of message, see below */
-	u_char	icmp_code;		/* type sub code */
-	u_short	icmp_cksum;		/* ones complement cksum of struct */
+	unsigned char	icmp_type;		/* type of message, see below */
+	unsigned char	icmp_code;		/* type sub code */
+	unsigned short	icmp_cksum;		/* ones complement cksum of struct */
 	union {
-		u_char ih_pptr;			/* ICMP_PARAMPROB */
+		unsigned char ih_pptr;			/* ICMP_PARAMPROB */
 		struct in_addr ih_gwaddr;	/* ICMP_REDIRECT */
 		struct ih_idseq {
 			n_short	icd_id;
@@ -77,7 +77,7 @@ struct icmp {
 			struct ip idi_ip;
 			/* options and then 64 bits of data */
 		} id_ip;
-		u_long	id_mask;
+		unsigned long	id_mask;
 		char	id_data[1];
 	} icmp_dun;
 #define	icmp_otime	icmp_dun.id_ts.its_otime
@@ -159,5 +159,5 @@ void	icmp_error __P((struct mbuf *, int, int, n_long, struct ifnet *));
 void	icmp_input __P((struct mbuf *, int));
 void	icmp_reflect __P((struct mbuf *));
 void	icmp_send __P((struct mbuf *, struct mbuf *));
-int	icmp_sysctl __P((int *, u_int, void *, size_t *, void *, size_t));
+int	icmp_sysctl __P((int *, unsigned int, void *, size_t *, void *, size_t));
 #endif

@@ -38,8 +38,8 @@
  * Per RFC 768, September, 1981.
  */
 struct udphdr {
-	u_short	uh_sport;		/* source port */
-	u_short	uh_dport;		/* destination port */
+	unsigned short	uh_sport;		/* source port */
+	unsigned short	uh_dport;		/* destination port */
 	short	uh_ulen;		/* udp length */
-	u_short	uh_sum;			/* udp checksum */
+	unsigned short	uh_sum;			/* udp checksum */
 };

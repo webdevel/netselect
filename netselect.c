@@ -82,8 +82,8 @@ typedef struct
 {
     struct ip ip;
     struct udphdr udp;
-    u_char seq;			/* sequence number of this packet */
-    u_char ttl;			/* ttl packet left with */
+    unsigned char seq;			/* sequence number of this packet */
+    unsigned char ttl;			/* ttl packet left with */
     struct timeval tv;		/* time packet left */
 } OPacket;
 
@@ -94,8 +94,8 @@ typedef struct
 {
     struct ip ip;
     struct icmp icmp;
-    u_char seq;			/* sequence number of this packet */
-    u_char ttl;			/* ttl packet left with */
+    unsigned char seq;			/* sequence number of this packet */
+    unsigned char ttl;			/* ttl packet left with */
     struct timeval tv;		/* time packet left */
 } IPacket;
 
@@ -120,7 +120,7 @@ typedef struct
     int retries;		/* transaction in progress */
     struct timeval send_time;	/* time of transmission */
     int code;			/* ICMP error code returned */
-    u_short seq;		/* sequence number sent with packet */
+    unsigned short seq;		/* sequence number sent with packet */
 } HostData;
 
 
@@ -141,7 +141,7 @@ static time_t deltaT(struct timeval *t1p, struct timeval *t2p);
 static HostData *wait_for_reply(HostData *hosts, int numhosts,
 				       int sock, int msec_timeout);
 static HostData *packet_ok(HostData *hosts, int numhosts,
-				  u_char *buf, int cc,
+				  unsigned char *buf, int cc,
 				  struct sockaddr_in *from);
 static int choose_ttl(HostData *host);
 static void usage();
@@ -156,8 +156,8 @@ static int rcvsock;		/* receive (icmp) socket file descriptor */
 static int sndsock;		/* send (udp) socket file descriptor */
 
 static int verbose = 0;
-static u_short ident;
-static u_short port = 32768 + 666; /* start udp dest port for probe packets */
+static unsigned short ident;
+static unsigned short port = 32768 + 666; /* start udp dest port for probe packets */
 
 static int validhosts;
 
@@ -781,7 +781,7 @@ static void send_probe(int seq, int ttl, OPacket *op, HostData *host)
 
     up->uh_sport = htons(ident);
     up->uh_dport = htons(port + seq);
-    up->uh_ulen = htons((u_short)(sizeof(OPacket) - sizeof(struct ip)));
+    up->uh_ulen = htons((unsigned short)(sizeof(OPacket) - sizeof(struct ip)));
     up->uh_sum = 0;
     
     if (verbose >= 4)
@@ -899,14 +899,14 @@ static HostData *wait_for_reply(HostData *hosts, int numhosts,
     fd_set fds;
     struct timeval wait, start_time;
     struct timezone tz;
-    u_char inpacket[INPACKET_SIZE];
+    unsigned char inpacket[INPACKET_SIZE];
     struct sockaddr_in from;
     int cc = 0;
     time_t msec_used;
     HostData *host;
     
 #if !defined(__GLIBC__)
-    int fromlen = sizeof(from);
+    unsigned int fromlen = sizeof(from);
 #else				/* __GLIBC__ */
     socklen_t fromlen = sizeof(from);
 #endif				/* __GLIBC__ */
@@ -944,10 +944,10 @@ static HostData *wait_for_reply(HostData *hosts, int numhosts,
 
 
 static HostData *packet_ok(HostData *hosts, int numhosts,
-				  u_char * buf, int cc,
+				  unsigned char * buf, int cc,
 				  struct sockaddr_in *from)
 {
-    u_char type, code;
+    unsigned char type, code;
     int hlen;
     struct ip *ip;
     struct icmp *icp;
@@ -975,7 +975,7 @@ static HostData *packet_ok(HostData *hosts, int numhosts,
 
 	hip = &icp->icmp_ip;
 	hlen = hip->ip_hl << 2;
-	up = (struct udphdr *) ((u_char *) hip + hlen);
+	up = (struct udphdr *) ((unsigned char *) hip + hlen);
 
 	
 	for (hcount = 0, host = hosts; hcount < numhosts; hcount++, host++)
@@ -1080,8 +1080,8 @@ static void results(HostData *hosts, int numhosts, int num_score)
 	
 	if (!lowest_host)
 	    break;
-	    
-	printf("%5d %s\n", lowest_score, lowest_host->hostname);
+
+	printf("%s\n", lowest_host->hostname);
 	lowest_host->invalid = 1; /* skip this one next time */
 	
 	if (num_score > 0)

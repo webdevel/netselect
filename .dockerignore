@@ -1,0 +1,15 @@
+dist
+.idea
+.cvsignore
+.git
+**/.gitignore
+*.xml
+*.iml
+HISTORY
+netselect-apt*
+netselect.1
+README.*
+!netselect.c
+!netinet
+!Makefile
+!test.sh

@@ -1,0 +1,7 @@
+version: "3.9"
+
+services:
+  alpine:
+    build: ./
+    volumes:
+      - ./:/app:rw,consistent
